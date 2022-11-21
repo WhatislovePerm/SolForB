@@ -1,9 +1,88 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model solforbTest.Models.OrdersIndexViewModel
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body>
+      <form class="form-group">
+          <input class="btn btn-info" asp-action="UpsertNewOrder" asp-controller="Home" type="submit" value="Добавить новый заказ"/>
+          <input class="form-control" type="date" asp-for="OrderDateFrom" value=@Model.OrderDateFrom.ToString("yyyy-MM-dd") />
+          <input class="form-control" type="date" asp-for="OrderDateTo" value="@Model.OrderDateTo.ToString("yyyy-MM-dd")" />
+          <select multiple asp-items="@Model.OrderNumbers" asp-for="SelectedOrderNumbers" class="form-control">
+              <option selected="selected" disabled="disabled">Фильтр по номеру заказа</option>
+          </select>
+          <select multiple asp-for="SelectedOrderProviders" asp-items="@Model.OrderProviders" class="form-control">
+              <option selected="selected" disabled="disabled">Фильтр по провайдеру</option>
+          </select>
+          <select multiple asp-items="@Model.OrderItemNames" asp-for="SelectedOrderItemNames" class="form-control">
+              <option selected="selected" disabled="disabled">Фильтр по названиям товаров</option>
+          </select>
+          <select multiple asp-items="@Model.OrderItemUnits" asp-for="SelectedOrderItemUnits" class="form-control">
+              <option selected="selected" disabled="disabled">Фильтр по еденицам измерения</option>
+          </select>
+
+          <table class="table">
+              <thead>
+                  <tr>
+                      <th>ID Заказа</th>
+                      <th>Номер заказа</th>
+                      <th>Дата создания</th>
+                      <th>Поставщик</th>
+                      <th>Товары</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  @foreach (var order in Model.OrderViewModels)
+                  {
+                      <tr onclick="OpenOrder(@order.Id)">
+                          <td>@order.Id</td>
+                          <td>@order.Number</td>
+                          <td>@order.DateOfCreate</td>
+                          <td>@order.ProviderName</td>
+                          <td>
+                              <table>
+                                  <thead>
+                                      <tr>
+                                          <th>Название товара</th>
+                                          <th>Колличество</th>
+                                          <th>Еденицы измерения</th>
+                                      </tr>
+                                  </thead>
+                                  @foreach (var orderItem in order.OrderItems)
+                                  {
+                                      <tbody>
+                                          <tr>
+                                              <td>@orderItem.ItemName</td>
+                                              <td>@orderItem.Quantity</td>
+                                              <td>@orderItem.Unit</td>
+                                          </tr>
+                                      </tbody>
+
+                                  }
+                              </table>
+                          </td>
+                      </tr>
+                  }
+              </tbody>
+          </table>
+          <input type="submit" asp-action="Index" asp-controller="Home" formmethod="post" value="Отфильтровать" class="btn btn-primary"/>
+      </form>
+      <!-- Optional JavaScript -->
+      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script type="text/javascript">function OpenOrder(id) {
+              window.open('https://' + window.location.host + '/Order/Index/' + id);
+          }
+      </script>
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

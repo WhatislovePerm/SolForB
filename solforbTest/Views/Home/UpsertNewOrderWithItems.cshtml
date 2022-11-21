@@ -1,0 +1,93 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+    @model solforbTest.Models.UpsertOrderViewModel
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href='@Url.Content("~/Content/themes/base/jquery-ui.css")' rel="stylesheet" type="text/css" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+
+    <form method="post" class="bi-align-center form-group">
+        <div class="form-group">
+            <input asp-for="Id" hidden="hidden" readonly="readonly" class="form-control" placeholder="@Model.Id" />
+            <label asp-for="OrderDateOfCreate" class="text-dark">Дата создания заказа </label>
+            <input type="date" asp-for="OrderDateOfCreate" class="form-control" placeholder="@Model.OrderDateOfCreate" />
+            <label asp-for="OrderNumber" class="text-dark">Номер заказа</label>
+            <input type="text" asp-for="OrderNumber" class="form-control" placeholder="@Model.OrderNumber" />
+            <label asp-for="ProviderName" class="text-dark">Провайдер</label>
+            <select asp-items="@Model.Providers" asp-for="ProviderName" class="form-control">
+                @if (@Model.ProviderName != null)
+                {
+                    <option selected="selected" value="@Model.ProviderName"></option>
+                }
+                else
+                {
+                    <option selected="selected" disabled="disabled">Выберите провайдера</option>
+                }
+            </select>
+        </div>
+
+        <table class="table form-group">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Название товара</th>
+                    <th>Колличество</th>
+                    <th>Еденицы измерения</th>
+                    <th>Удалить</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.OrderItemViewModels != null)
+                 {
+                    @for (int i = 0; i < Model.OrderItemViewModels.Count; i++)
+                     {
+                        <tr>
+                            <td>
+                                <input readonly="readonly" hidden="hidden" asp-for="OrderItemViewModels[i].Id" placeholder="@Model.OrderItemViewModels[i].Id" />
+                            </td>
+                            <td>
+                                <label asp-for="OrderItemViewModels[i].ItemName">Имя товара</label>
+                                <input asp-for="OrderItemViewModels[i].ItemName" value="@Model.OrderItemViewModels[i].ItemName" />
+                            </td>
+                            <td>
+                                <label asp-for="OrderItemViewModels[i].Quantity">Колличество</label>
+                                <input asp-for="OrderItemViewModels[i].Quantity" value="@Model.OrderItemViewModels[i].Quantity" />
+                            </td>
+                            <td>
+                                <label asp-for="OrderItemViewModels[i].Unit">Еденицы измерения</label>
+                                <input asp-for="OrderItemViewModels[i].Unit" value="@Model.OrderItemViewModels[i].Unit" />
+                            </td>
+                            <td><input asp-for="OrderItemViewModels[i].IsRemoved" type="checkbox" value="true"></input></td>
+                        </tr>
+                     }
+                 }
+            </tbody>
+
+        </table>
+
+        <input type="submit" value="Сохранить" asp-action="UpsertNewOrder" />
+        <a> <input type="submit" value="Добавить новый товар" asp-action="UpsertNewOrderWithItems" /> </a>
+        <a> <input type="submit" value="Удалить выбранные товары" asp-action="UpsertNewOrderWithoutDeletedItems" /> </a>
+    </form>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -6,4 +6,26 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Data\" />
+    <None Remove="Data\DataContext\" />
+    <None Remove="Microsoft.EntityFrameworkCore" />
+    <None Remove="Data\Entity\" />
+    <None Remove="Data\Repository\" />
+    <None Remove="Data\Repository\Implementation\" />
+    <None Remove="Microsoft.EntityFrameworkCore.Sqlite" />
+    <None Remove="Views\Order\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Data\DataContext\" />
+    <Folder Include="Data\Entity\" />
+    <Folder Include="Data\Repository\" />
+    <Folder Include="Data\Repository\Implementation\" />
+    <Folder Include="Views\Order\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.0" />
+  </ItemGroup>
 </Project>

@@ -1,7 +1,20 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Microsoft.EntityFrameworkCore;
+using solforbTest.Data.DataContext;
+using solforbTest.Data.Repository;
+using solforbTest.Data.Repository.Implementation;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<ApplicationDataContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+
+builder.Services.AddTransient<IOrderItemRepository, OrderItemRepository>();
+
+builder.Services.AddTransient<IProviderRepository, ProviderRepository>();
+
 
 var app = builder.Build();
 
